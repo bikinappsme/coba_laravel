@@ -21,5 +21,7 @@ class ProjectSeeder extends Seeder
             'judul' => 'Project 1',
             'deskripsi' => 'Deskripsi Project 1',
         ]);
+
+        
     }
 }
