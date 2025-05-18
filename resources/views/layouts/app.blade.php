@@ -18,6 +18,8 @@
   @include('partials.header')
     
   @yield('content')
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  @stack('scripts')
   
   @include('partials.footer')
 

@@ -72,13 +72,13 @@
                 <td>{{ $post->judul }}</td>
                 <td>{{ $post->deskripsi }}</td>
                 <td>
-                  <div class="btn-group" role="group">
+                <div class="btn-group" role="group">
                     <button type="button" class="btn btn-sm btn-info me-2" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $post->id }}" data-judul="{{ $post->judul }}" data-deskripsi="{{ $post->deskripsi }}">Edit</button>
-                    <form action="{{ route('crud.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form> 
+                   <form action="{{ route('crud.destroy', $post->id) }}" method="POST" class="d-inline delete-form">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="btn btn-sm btn-danger btn-delete">Delete</button>
+                    </form>
                   </div>
                 </td>
             </tr>
@@ -152,5 +152,64 @@
     });
     })();
   </script>
+  @push('scripts')
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        showConfirmButton: false,
+        timer: 2000
+    });
+</script>
+@endif
+@if($errors->any())
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops!',
+        html: `{!! implode('<br>', $errors->all()) !!}`,
+    });
+</script>
+@endif
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        showConfirmButton: false,
+        timer: 2000
+    });
+</script>
+@endif
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteButtons = document.querySelectorAll('.btn-delete');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            const form = this.closest('form');
+
+            Swal.fire({
+                title: 'Yakin ingin menghapus?',
+                text: "Data akan dihapus permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+});
+</script>
+@endpush
 
 @endsection
